@@ -1,0 +1,144 @@
+<head>
+    <title>Centers has Banks</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script>
+        //    Delete functions
+        function deleteCenterBank(medicalCenterID, bloodBankID) {
+
+            console.log("deletecenterBank called");
+
+            // Put our data we want to send in a javascript object
+            let data = {
+                centerID: medicalCenterID,
+                bankID: bloodBankID
+            };
+
+            // Setup our AJAX request
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("DELETE", "/delete-center-has-bank-ajax", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+
+            // Tell our AJAX request how to resolve
+            xhttp.onreadystatechange = () => {
+                if (xhttp.readyState == 4 && xhttp.status == 204) {
+
+                    // Add the new data to the table
+                    deleteRow(medicalCenterID, bloodBankID);
+
+                }
+                else if (xhttp.readyState == 4 && xhttp.status != 204) {
+                    console.log("There was an error with the input.")
+                }
+            }
+            // Send the request and wait for the response
+            xhttp.send(JSON.stringify(data));
+        }
+
+        function deleteRow(medicalCenterID, bloodBankID){
+
+            console.log("Delete Row..")
+
+            let table = document.getElementById("donation-has-donor-table");
+            for (let i = 0, row; row = table.rows[i]; i++) {
+                //iterate through rows
+                //rows would be accessed using the "row" variable assigned in the for loop
+                if (table.rows[i].getAttribute("center-value") == medicalCenterID) {
+                    if (table.rows[i].getAttribute("bank-value") == bloodBankID) {
+                        console.log("Found Row!")
+                        table.deleteRow(i);
+                        break;
+                    }
+                }
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+     <!-- Title -->
+    <h1>Medical Centers has Blood Banks</h1>
+
+    {{!-- Links section --}}
+    [ 
+    <a href="/">Blood Donors</a> |
+    <a href="/Blood_Bags">Blood Bags</a> |
+    <a href="/Blood_Recipients">Blood Recipients</a> |
+    <a href="/Blood_Donation_Inventories">Blood Donation Inventories</a> |
+    <a href="/Blood_Donation_Centers">Blood Donation Centers</a> |
+    <a href="/Blood_Banks">Blood Banks</a> | 
+    <a href="/Medical_Centers">Medical Centers</a> 
+    ]
+    <p></p>
+    [
+    <a href="/Banks_has_Donations">Banks has Donation Centers</a> |
+    <a href="/Donations_has_Donors">Donation Centers has Donors</a> |
+    <a href="/Centers_has_Banks">Medical Centers has Banks</a> |
+    <a href="/Centers_has_Recipients">Medical Centers has Recipients</a> 
+    ] 
+    <br></br>
+
+    {{!-- Display Centers has Banks --}}
+    <div id="browse" style="display: block">
+        <legend><strong>Browse Mecdical Centers Has Blood Banks</strong></legend>
+        <table id="donation-has-donor-table" border="1" cellpadding="5">
+            {{!-- Header section --}}
+            <thead>
+                <tr>
+                    <th></th>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+            {{!-- Body section --}}
+            <tbody>
+                {{!-- For each row, print the all columns --}}
+                {{#each data}}
+                <tr center-value={{this.Medical_Centers_medicalCenterID}} bank-value={{this.Blood_Banks_bloodBankID}}>
+                    <td><button onclick="deleteCenterBank({{this.Medical_Centers_medicalCenterID}}, {{this.Blood_Banks_bloodBankID}})">Delete</button></td>
+                    <td>{{this.Medical_Centers_medicalCenterID}}</td>
+                    <td>{{this.Blood_Banks_bloodBankID}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table> 
+    </div>
+    <br></br>
+
+    <!-- Intsert New Connection-->
+    <div id="insert">
+        <form method="POST" id="add-center-has-bank-form" action="/add-center-has-bank-form">
+        <legend><strong>Add Medical Center has Blood Banks</strong></legend>
+        <fieldset class="fields">
+
+            <label for="medicalCenterID-Input">Select Medical Center ID</label>
+            <select name="medicalCenterID-Input" id="medicalCenterID-Input">
+                <option></option>
+                {{#each medCenterID}}
+                <option value="{{this.medicalCenterID}}">{{this.medicalCenterID}}</option>
+                {{/each}}
+            </select>
+       
+            <br></br>
+
+            <label for="bloodBankID-Input">Select Blood Bank ID</label>
+            <select name="bloodBankID-Input" id="bloodBankID-Input">
+                <option></option>
+                {{#each bankID}}
+                <option value="{{this.bloodBankID}}">{{this.bloodBankID}}</option>
+                {{/each}}
+            </select> <br>
+
+        </fieldset>
+            <p></p>
+
+            <input type="submit"> <br> <br>
+
+        </form>
+    </div>
+</body>

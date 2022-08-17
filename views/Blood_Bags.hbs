@@ -1,0 +1,275 @@
+<head>
+    <title>Blood Bags</title>
+
+</head>
+
+<body>
+ 
+    <!-- Title -->
+    <h1>Blood Bags</h1>
+
+    {{!-- Links section --}}
+    [ 
+    <a href="/">Blood Donors</a> |
+    <a href="/Blood_Bags">Blood Bags</a> |
+    <a href="/Blood_Recipients">Blood Recipients</a> |
+    <a href="/Blood_Donation_Inventories">Blood Donation Inventories</a> |
+    <a href="/Blood_Donation_Centers">Blood Donation Centers</a> |
+    <a href="/Blood_Banks">Blood Banks</a> | 
+    <a href="/Medical_Centers">Medical Centers</a> 
+    ]
+    <p></p>
+    [
+    <a href="/Banks_has_Donations">Banks has Donation Centers</a> |
+    <a href="/Donations_has_Donors">Donation Centers has Donors</a> |
+    <a href="/Centers_has_Banks">Medical Centers has Banks</a> |
+    <a href="/Centers_has_Recipients">Medical Centers has Recipients</a> 
+    ] 
+    <br></br>
+
+    {{!-- Display Blood Bags --}}
+    <div id="browse" style="display: block">
+      <legend><strong>Browse Blood Bags</strong></legend>
+        <table id="bag-table" border="1" cellpadding="5">
+            {{!-- Header section --}}
+            <thead>
+                <tr>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+            {{!-- Body section --}}
+            <tbody>
+                {{!-- For each row, print the all columns --}}
+                {{#each data}}
+                <tr data-value={{this.bloodBagID}}>
+                    <td>{{this.bloodBagID}}</td>
+                    <td>{{this.bloodDonorID}}</td>
+                    <td>{{this.bloodBankID}}</td>
+                    <td>{{this.donorBloodGroup}}</td>
+                    <td>{{this.bloodComponent}}</td>
+                    <td>{{this.hbCount}}</td>
+                    <td>{{this.unitsReceived}}</td>
+                    <td>{{this.donationDate}}</td>
+                    <td>{{this.isEmpty}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <!-- Search Blood Bag -->
+    
+    <form id="search-blood-group-html" method='GET' action='/Blood_Bags'>
+    <legend><strong>Search by Blood Group using the field below.</strong></legend>
+        <fieldset class="fields">
+            <label for="input-lname">Search by Blood Group: </label>
+            <input type="text" name="group" id="input-blood-group-html-search">
+            
+            <input type="submit">
+            <a href='/Blood_Bags'><button>Reset</button></a>
+        </fieldset>
+    </form>
+    <br>
+
+   <!-- Intsert New Blood Bag -->
+    <div id="insert">
+        <form method="POST" id="add-blood-bag-form" action="/add-blood-bag-form">
+        <legend><strong>Add Blood Bag</strong></legend>
+        <fieldset class="fields">
+
+            <label for="bloodDonorID-Input">Select Blood Donor ID</label>
+            <select name="bloodDonorID-Input" id="bloodDonorID-Input">
+                <option></option>
+                {{#each donorID}}
+                <option value="{{this.bloodDonorID}}">{{this.bloodDonorID}}</option>
+                {{/each}}
+            </select>
+       
+            <label for="bloodBankID-Input">Select Blood Bank ID</label>
+            <select name="bloodBankID-Input" id="bloodBankID-Input">
+                <option></option>
+                {{#each bankID}}
+                <option value="{{this.bloodBankID}}">{{this.bloodBankID}}</option>
+                {{/each}}
+            </select> <br>
+
+            <label for="bloodComponent-Input">Blood Component</label> 
+            <input type="text" name="bloodComponent-Input" id="bloodComponent-Input" required> <br>
+
+            <label for="hbCount-Input">HB Count</label>
+            <input type="text" name="hbCount-Input" id="hbCount-Input" required> <br>
+
+            <label for="unitsRecieved-Input">Units Recieved</label>
+            <input type="text" name="unitsRecieved-Input"  id="unitsRecieved-Input" required> <br>
+
+            <label for="donationDate-Input">Donation Date (YYYY-MM-DD)</label>
+            <input type="text" name="donationDate-Input" id="donationDate-Input" required> <br>
+
+            <label for="recipientBloodGroup-Input">Empty (1 = true, 0 = false)</label>
+            <input type="text" name="recipientBloodGroup-Input" id="recipientBloodGroup-Input" required> <br>
+
+        </fieldset>
+            <p></p>
+
+            <input type="submit"> <br> <br>
+
+        </form>
+    </div>
+
+    <!-- Update Blood Bag 
+    <div id="update">
+        <form  method="POST" id="updateDonor">
+            <legend><strong>Update Blood Bag Template</strong></legend>
+                <fieldset class="fields">
+                <label>bloodDonorID</label><input type="text" name="bloodDonorID-Input"> <br>
+                <label>Blood Component</label><input type="text" name="bloodComponent-Input"> <br>
+                <label>HB Count</label><input type="text" name="hbCount-Input"> <br> 
+                <label>Units Recieved</label><input type="text" name="unitsRecieved-Input"> <br>
+                <label>Donation Date</label><input type="text" name="donationDate-Input"> <br>
+        </fieldset>
+            <input class="btn" type="button" value="Update" onClick="browseBags()()">
+            <input class="btn" type="button" value="Cancel" onClick="browseBags()()">
+        </form> 
+    </div>
+    -->  
+
+    <!-- Update Blood Bag -->
+    <div id="update">
+        <form id="update-bag-form-ajax">
+            <legend><strong>Update Blood Bag</strong></legend>
+            <fieldset class="fields">
+
+            <label for="bloodBagID-Update">Select Blood Bag ID</label>
+            <select name="bloodBagID-Update" id="bloodBagID-Update">
+                <option></option>
+                {{#each data}}
+                <option value="{{this.bloodBagID}}">{{this.bloodBagID}}</option>
+                {{/each}}
+            </select> 
+
+            <label for="bloodDonorID-Update">Select Blood Donor ID</label>
+            <select name="bloodDonorID-Update" id="bloodDonorID-Update">
+                <option></option>
+                {{#each donorID}}
+                <option value="{{this.bloodDonorID}}">{{this.bloodDonorID}}</option>
+                {{/each}}
+            </select>
+
+            <label for="bloodBankID-Update">Select Blood Bank ID</label>
+            <select name="bloodBankID-Update" id="bloodBankID-Update">
+                <option></option>
+                {{#each bankID}}
+                <option value="{{this.bloodBankID}}">{{this.bloodBankID}}</option>
+                {{/each}}
+            </select> <br>
+
+            <label for="bloodComponent-Update">Blood Component</label> 
+            <input type="text" name="bloodComponent-Update" id="bloodComponent-Update" required> <br>
+
+            <label for="hbCount-Update">HB Count</label>
+            <input type="text" name="hbCount-Update" id="hbCount-Update" required> <br>
+
+            <label for="unitsRecieved-Update">Units Recieved</label>
+            <input type="text" name="unitsRecieved-Update"  id="unitsRecieved-Update" required> <br>
+
+            <label for="donationDate-Update">Donation Date (YYYY-MM-DD)</label>
+            <input type="text" name="donationDate-Update" id="donationDate-Update" required> <br>
+
+            <label for="isEmpty-Update">Empty (1 = true, 0 = false)</label>
+            <input type="text" name="isEmpty-Update" id="isEmpty-Update" required> <br>
+
+            </fieldset>
+            <p></p>
+
+            <input type="submit"> <br>
+
+        </form> 
+    </div>
+
+    <script>
+
+        /*
+        Update functions
+        */
+
+        let updateBagForm = document.getElementById('update-bag-form-ajax');
+
+        // Modify the objects we need
+        updateBagForm.addEventListener("submit", function (e) {
+
+            console.log("Listener..");
+    
+            // Prevent the form from submitting
+            e.preventDefault();
+
+            // Get form fields we need to get data from
+            let inputID = document.getElementById("bloodBagID-Update");
+            let donorID = document.getElementById("bloodDonorID-Update");
+            let bankID = document.getElementById("bloodBankID-Update");
+            let inputBloodComponent = document.getElementById("bloodComponent-Update");
+            let inputhbCount = document.getElementById("hbCount-Update");
+            let inputUnits = document.getElementById("unitsRecieved-Update");
+            let inputDate = document.getElementById("donationDate-Update");
+            let inputisEmpty = document.getElementById("isEmpty-Update");
+
+
+            // Get the values from the form fields
+            let iDValue = inputID.value;
+            let donorIDValue = donorID.value;
+            let bankIDValue = bankID.value;
+            let bloodComponentValue = inputBloodComponent.value;
+            let hbCountValue = inputhbCount.value;
+            let unitsValue = inputUnits.value;
+            let dateValue = inputDate.value;
+            let isEmptyValue = inputisEmpty.value
+
+            //Check for NULL values?
+            //if (isNaN(homeworldValue)) 
+            //{
+            //    return;
+            //}
+
+            // Put our data we want to send in a javascript object
+            let data = {
+                bloodBagID: iDValue,
+                bloodDonorID: donorIDValue,
+                bloodBankID: bankIDValue,
+                bloodComponent: bloodComponentValue,
+                hbCount: hbCountValue,
+                unitsReceived: unitsValue,
+                donationDate: dateValue,
+                isEmpty: isEmptyValue
+            }
+
+            
+            // Setup our AJAX request
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("PUT", "/put-bag-ajax", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+
+            window.location.href
+
+            // Tell our AJAX request how to resolve
+            xhttp.onreadystatechange = () => {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    // Reload page
+                    window.location.reload();
+                }
+                else if (xhttp.readyState == 4 && xhttp.status != 200) {
+                    console.log("There was an error with the input.")
+                }
+        }
+
+        // Send the request and wait for the response
+        xhttp.send(JSON.stringify(data));
+
+        })
+
+    </script>
+
+</body> 

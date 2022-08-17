@@ -1,0 +1,302 @@
+<head>
+
+    <title>Blood Recipients</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+  <!-- Title -->
+  <h1>Blood Recipients</h1>
+
+    {{!-- Links section --}}
+    [ 
+    <a href="/">Blood Donors</a> |
+    <a href="/Blood_Bags">Blood Bags</a> |
+    <a href="/Blood_Recipients">Blood Recipients</a> |
+    <a href="/Blood_Donation_Inventories">Blood Donation Inventories</a> |
+    <a href="/Blood_Donation_Centers">Blood Donation Centers</a> |
+    <a href="/Blood_Banks">Blood Banks</a> | 
+    <a href="/Medical_Centers">Medical Centers</a> 
+    ]
+    <p></p>
+    [
+    <a href="/Banks_has_Donations">Banks has Donation Centers</a> |
+    <a href="/Donations_has_Donors">Donation Centers has Donors</a> |
+    <a href="/Centers_has_Banks">Medical Centers has Banks</a> |
+    <a href="/Centers_has_Recipients">Medical Centers has Recipients</a> 
+    ] 
+    <br></br>
+
+ {{!-- Display Blood Recipients --}}
+    <div id="browse" style="display: block">
+      <legend><strong>Browse Blood Recipients</strong></legend>
+        <table id="recipient-table" border="1" cellpadding="5">
+            {{!-- Header section --}}
+            <thead>
+                <tr>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+            {{!-- Body section --}}
+            <tbody>
+                {{!-- For each row, print the all columns --}}
+                {{#each data}}
+                <tr data-value={{this.bloodRecipientID}}>
+                    <td>{{this.bloodRecipientID}}</td>
+                    <td>{{this.bloodBagID}}</td>
+                    <td>{{this.recipientLastName}}</td>
+                    <td>{{this.recipientFirstName}}</td>
+                    <td>{{this.bloodComponentTransfused}}</td>
+                    <td>{{this.recipientBloodGroup}}</td>
+                    <td>{{this.recipientPhoneNumber}}</td>
+                    <td>{{this.recipientEmail}}</td>
+                    <td>{{this.recipientAddress}}</td>
+                    <td>{{this.recipientDiagnosis}}</td>
+                    <td>{{this.recipientDOB}}</td>
+                    <td>{{this.recipientLastTransfusionDate}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        
+    </div>
+    <br></br>
+
+    <!-- Intsert New Blood Recipient -->
+    <div id="insert">
+        <form method="POST" id="add-blood-recipient-form" action="/add-blood-recipient-form">
+        <legend><strong>Add Blood Recipient</strong></legend>
+        <fieldset class="fields">
+
+            <label for="bloodBagInput">Select bloodBagID</label>
+            <select name="bloodBagInput" id="bloodBagInput">
+                <option></option>
+                {{#each bag}}
+                <option value="{{this.bloodBagID}}">{{this.bloodBagID}}</option>
+                {{/each}}
+                <option value="NULL">NULL</option>
+            </select> <br>
+
+            <label for="recipientLastName-Input">Last Name</label>
+            <input type="text" name="recipientLastName-Input" id="recipientLastName-Input" required> <br>
+
+            <label for="recipientFirstName-Input">First Name</label>
+            <input type="text" name="recipientFirstName-Input"  id="recipientFirstName-Input" required> <br>
+
+            <label for="bloodComponentTransfused-Input">Blood Component Transfused</label>
+            <input type="text" name="bloodComponentTransfused-Input" id="bloodComponentTransfused-Input" required> <br>
+
+            <label for="recipientBloodGroup-Input">Blood Group</label>
+            <input type="text" name="recipientBloodGroup-Input" id="recipientBloodGroup-Input" required> <br>
+
+            <label for="recipientPhoneNumber-Input">Phone Number</label>
+            <input type="text" name="recipientPhoneNumber-Input" id="recipientPhoneNumber-Input" required> <br> 
+
+            <label for="recipientEmail-Input">Email</label>
+            <input type="text" name="recipientEmail-Input" id="recipientEmail-Input" required> <br>
+
+            <label for="recipientAddress-Input">Address</label>
+            <input type="text" name="recipientAddress-Input" id="recipientAddress-Input" required> <br>
+
+            <label for="recipientDiagnosis-Input">Diagnosis</label>
+            <input type="text" name="recipientDiagnosis-Input" id="recipientDiagnosis-Input" required> <br>
+
+            <label for="recipientDOB-Input">DOB (YYYY-MM-DD)</label>
+            <input type="text" name="recipientDOB-Input" id="recipientDOB-Input" required> <br>
+
+            <label for="recipientLastTransfusion-Input">Last Transfusion (YYYY-MM-DD)</label>
+            <input type="text" name="recipientLastTransfusion-Input" id="recipientLastTransfusion-Input" required> <br>
+
+        </fieldset>
+            <p></p>
+
+            <input type="submit"> <br> <br>
+
+        </form>
+    </div>
+
+        <!-- Update Blood Recipient -->
+    <div id="update">
+        <form id="update-recipient-form-ajax">
+            <legend><strong>Update Blood Recipient</strong></legend>
+            <fieldset class="fields">
+
+            <label for="bloodRecipientID-Select">Select Blood Recipient ID</label>
+            <select name="bloodRecipientID-Select" id="bloodRecipientID-Select" required>
+                <option></option>
+                {{#each data}}
+                <option value="{{this.bloodRecipientID}}">{{this.bloodRecipientID}}</option>
+                {{/each}}
+            </select> 
+
+            <label for="bloodBagID-Select">Select Blood Bag ID</label>
+            <select name="bloodBagID-Select" id="bloodBagID-Select">
+                <option></option>
+                {{#each bag}}
+                <option value="{{this.bloodBagID}}">{{this.bloodBagID}}</option>
+                {{/each}}
+                <option value="NULL">NULL</option>
+            </select> <br>
+
+            <label>Last Name</label>
+            <input type="text" name="recipientLastName-Update" id="recipientLastName-Update" required> <br>
+
+            <label>First Name</label>
+            <input type="text" name="recipientFirstName-Update" id="recipientFirstName-Update" required> <br>
+
+            <label>Blood Component Transfused</label>
+            <input type="text" name="bloodComponentTransfused-Update" id="bloodComponentTransfused-Update" required> <br>
+
+            <label>Blood Group</label>
+            <input type="text" name="recipientBloodGroup-Update" id="recipientBloodGroup-Update" required> <br>
+
+            <label>Phone Number</label>
+            <input type="text" name="recipientPhoneNumber-Update" id="recipientPhoneNumber-Update" required> <br>
+
+            <label>Email</label>
+            <input type="text" name="recipientEmail-Update" id="recipientEmail-Update" required> <br>
+
+            <label>Address</label>
+            <input type="text" name="recipientAddress-Update" id="recipientAddress-Update" required> <br>
+
+            <label>Diagnosis</label>
+            <input type="text" name="recipienDiagnosis-Update" id="recipienDiagnosis-Update" required> <br>
+
+            <label>DOB (YYYY-MM-DD) </label>
+            <input type="text" name="recipientDOB-Update" id="recipientDOB-Update" required> <br>
+
+            <label>Last Transfusion (YYYY-MM-DD) </label>
+            <input type="text" name="recipientLastTransfusionDate-Update" id="recipientLastTransfusionDate-Update" required> <br>
+
+            </fieldset>
+            <p></p>
+
+            <input type="submit"> <br>
+
+        </form> 
+    </div>
+
+    <script>
+
+        /*
+        Update functions
+        */
+
+        let updateRecipientForm = document.getElementById('update-recipient-form-ajax');
+
+        // Modify the objects we need
+        updateRecipientForm.addEventListener("submit", function (e) {
+
+            console.log("Listener..");
+    
+            // Prevent the form from submitting
+            e.preventDefault();
+
+            // Get form fields we need to get data from
+            let inputID = document.getElementById("bloodRecipientID-Select");
+            let inputBloodBagID = document.getElementById("bloodBagID-Select");
+            let inputLastName = document.getElementById("recipientLastName-Update");
+            let inputFirstName = document.getElementById("recipientFirstName-Update");
+            let inputBloodComponent = document.getElementById("bloodComponentTransfused-Update");
+            let inputBloodGroup = document.getElementById("recipientBloodGroup-Update");
+            let inputPhone = document.getElementById("recipientPhoneNumber-Update");
+            let inputEmail = document.getElementById("recipientEmail-Update");
+            let inputAddress = document.getElementById("recipientAddress-Update");
+            let inputDiagnosis = document.getElementById("recipienDiagnosis-Update");
+            let inputDOB = document.getElementById("recipientDOB-Update");
+            let inputLastTransfusion = document.getElementById("recipientLastTransfusionDate-Update");
+
+            // Get the values from the form fields
+            let iDValue = inputID.value;
+            let bloodBagIDValue = inputBloodBagID.value;
+            let lastNameValue = inputLastName.value;
+            let firstNameValue = inputFirstName.value;
+            let bloodComponentValue = inputBloodComponent.value;
+            let bloodGroupValue = inputBloodGroup.value;
+            let phoneValue = inputPhone.value;
+            let emailValue = inputEmail.value;
+            let addressValue = inputAddress.value;
+            let diagnosisValue = inputDiagnosis.value;
+            let DOBValue = inputDOB.value;
+            let lastTransfusionValue = inputLastTransfusion.value;
+
+
+            //Check for NULL values?
+            //if (isNaN(homeworldValue)) 
+            //{
+            //    return;
+            //}
+
+
+            // Put our data we want to send in a javascript object
+            let data = {
+                recipientID: iDValue,
+                bloodBagID: bloodBagIDValue,
+                recipientLastName: lastNameValue,
+                recipientFirstName: firstNameValue,
+                bloodComponentTransfused: bloodComponentValue,
+                recipientBloodGroup: bloodGroupValue,
+                recipientPhoneNumber: phoneValue,
+                recipientEmail: emailValue,
+                recipientAddress: addressValue,
+                recipientDiagnosis: diagnosisValue,
+                recipientDOB: DOBValue,
+                recipientLastTransfusionDate: lastTransfusionValue,  
+            }
+            
+            // Setup our AJAX request
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("PUT", "/put-recipient-ajax", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+
+            window.location.href
+
+            // Tell our AJAX request how to resolve
+            xhttp.onreadystatechange = () => {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    // Reload page
+                    window.location.reload();
+                }
+                else if (xhttp.readyState == 4 && xhttp.status != 200) {
+                    console.log("There was an error with the input.")
+                }
+        }
+
+        // Send the request and wait for the response
+        xhttp.send(JSON.stringify(data));
+
+        })
+
+    </script>
+
+    <!-- Update Blood Recipient 
+    <div id="update">
+        <form  method="POST" id="updaterecipient">
+            <legend><strong>Update Blood Recipient Template</strong></legend>
+                <fieldset class="fields">
+                <label>bloodRecipientID:</label> 1 <br>
+                <label>Blood Bag</label><input type="text" name="bloodBagId-Input"> <br>
+                <label>Last Name</label><input type="text" name="recipientLastName-Input"> <br>
+                <label>First Name</label><input type="text" name="recipientFirstName-Input"> <br>
+                <label>Blood Component Transfused</label><input type="text" name="recipientBloodComponent-Input"> <br>
+                <label>Blood Group</label><input type="text" name="recipientBloodComponent-Input"> <br>
+                <label>Phone Number</label><input type="text" name="recipientPhoneNumber-Input"> <br> 
+                <label>Email</label><input type="text" name="recipientEmail-Input"> <br>
+                <label>Address</label><input type="text" name="recipientAddress-Input"> <br>
+                <label>DOB</label><input type="text" name="recipientDOB-Input"> <br>
+                <label>Diagnosis</label><input type="text" name="recipientDiagnosis-Input"> <br>
+                <label>Last Donation</label><input type="text" name="recipientLastDonation-Input"> <br>
+        </fieldset>
+            <input class="btn" type="button" value="Update" onClick="browseRecipients()">
+            <input class="btn" type="button" value="cancel" onClick="browseRecipients()">
+        </form> 
+    </div>
+    -->
+</body> 

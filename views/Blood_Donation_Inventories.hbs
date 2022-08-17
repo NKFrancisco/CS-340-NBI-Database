@@ -1,0 +1,141 @@
+<head>
+    <title>Blood Donation Inventories</title>
+    <link rel="stylesheet" href="style.css"/>
+
+        <!-- Javascript to toggle sections -->
+        <script language="JavaScript">
+          function showform(dowhat) {
+            if (dowhat == 'insert'){
+              document.getElementById('browse').style.display = 'none';
+              document.getElementById('insert').style.display = 'block';
+              document.getElementById('update').style.display = 'none';
+              document.getElementById('delete').style.display = 'none';
+            }
+            else if (dowhat == 'update'){
+              document.getElementById('browse').style.display = 'none';
+              document.getElementById('insert').style.display = 'none';
+              document.getElementById('update').style.display = 'block';
+              document.getElementById('delete').style.display = 'none';
+            }
+            else if (dowhat == 'delete'){
+              document.getElementById('browse').style.display = 'none';
+              document.getElementById('insert').style.display = 'none';
+              document.getElementById('update').style.display = 'none';
+              document.getElementById('delete').style.display = 'block';
+            }
+            else if (dowhat == 'all'){
+              document.getElementById('browse').style.display = 'block';
+              document.getElementById('insert').style.display = 'block';
+              document.getElementById('update').style.display = 'block';
+              document.getElementById('delete').style.display = 'block';
+            }
+            else { //by default display browse
+              document.getElementById('browse').style.display = 'block';
+              document.getElementById('insert').style.display = 'none';
+              document.getElementById('update').style.display = 'none';
+              document.getElementById('delete').style.display = 'none';
+            }
+          }
+          function addDonationInventory() { showform('insert'); }
+          function updateDonationInventory(id) { showform('update'); }
+          function deleteDonationInventory(id) { showform ('delete'); }
+          function browseDonationInventories() { showform ('browse'); }
+          function showAll() { showform ('all'); }
+      </script>
+
+</head>
+
+<body onload="browseDonationInventories()">
+ 
+    <!-- Title -->
+    <h1>Blood Donation Inventories</h1>
+    {{!-- Links section --}}
+    [ 
+    <a href="/">Blood Donors</a> |
+    <a href="/Blood_Bags">Blood Bags</a> |
+    <a href="/Blood_Recipients">Blood Recipients</a> |
+    <a href="/Blood_Donation_Inventories">Blood Donation Inventories</a> |
+    <a href="/Blood_Donation_Centers">Blood Donation Centers</a> |
+    <a href="/Blood_Banks">Blood Banks</a> | 
+    <a href="/Medical_Centers">Medical Centers</a>
+    ]
+    <p></p>
+    [
+    <a href="/Banks_has_Donations">Banks has Donation Centers</a> |
+    <a href="/Donations_has_Donors">Donation Centers has Donors</a> |
+    <a href="/Centers_has_Banks">Medical Centers has Banks</a> |
+    <a href="/Centers_has_Recipients">Medical Centers has Recipients</a> 
+    ] 
+    <br></br>
+
+    {{!-- Display Blood Donation Inventories --}}
+    <div id="browse" style="display: block">
+      <legend><strong>Browse Blood Donation Inventories</strong></legend>
+        <table id="inventory-table" border="1" cellpadding="5">
+            {{!-- Header section --}}
+            <thead>
+                <tr>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+            {{!-- Body section --}}
+            <tbody>
+                {{!-- For each row, print the all columns --}}
+                {{#each data}}
+                <tr data-value={{this.bloodDonationInventoryID}}>
+                    <td>{{this.bloodDonationInventoryID}}</td>
+                    <td>{{this.bloodBankID}}</td>
+                    <td>{{this.bloodBagID}}</td>
+                    <td>{{this.isEmpty}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table> 
+    </div>
+    <br></br>
+
+  <!-- Intsert New Blood Inventory -->
+  <div id="insert">
+    <form method="POST" id="addDonationInventory">
+      <legend><strong>Add Blood Donation Inventory</strong></legend>
+        <fieldset class="fieldset">
+          <label>bloodBagID</label><input type="text" name="bloodBagID-Input"> <br>
+          <label>bloodDonationCenterID</label><input type="text" name="bloodDonationCenterID-Input"> <br>
+        </fieldset>
+        <input class="btn" type="button" value="Add" onClick="browseDonationInventories()">
+        <input class="btn" type="button" value="Cancel" onClick="browseDonationInventories()()">
+    </form>
+  </div>
+
+  <!-- Update Blood Donation Inventory -->
+  <div id="update">
+    <form  method="POST" id="updateDonor">
+        <legend><strong>Update Blood Donation Inventory</strong></legend>
+            <fieldset class="fields">
+              <label>bloodBagID</label><input type="text" name="bloodBagID-Input"> <br>
+              <label>bloodDonationCenterID</label><input type="text" name="bloodDonationCenterID-Input"> <br>
+      </fieldset>
+        <input class="btn" type="button" value="Update" onClick="browseDonationInventories()()">
+        <input class="btn" type="button" value="Cancel" onClick="browseDonationInventories()()">
+    </form> 
+  </div>
+
+   <!-- Delete Blood Inventory -->
+   <div id="delete">
+    <form method="POST" id="deleteDonationInventory">
+        <legend><strong>Delete Blood Donation Inventory</strong></legend>
+            <fieldset class="fields">
+            <p>Are you sure you wish to delete the following?</p>
+            <label>bloodDonationInventoryID:</label> 1 <br>
+            <label> bloodBagID  </label> 1 <br>
+      </fieldset>
+        <input class="btn" type="button" value="Delete" onClick="browseDonationInventories()()">
+        <input class="btn" type="button" value="Cancel" onClick="browseDonationInventories()()">
+    </form> 
+  </div>
+
+</body>  

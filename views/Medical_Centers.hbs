@@ -1,0 +1,282 @@
+<head>
+    <title>Medical Centers</title>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script>
+        //    Delete functions
+        function deleteCenter(medicalCenterID) {
+
+            console.log("deleteCenter called");
+
+            // Put our data we want to send in a javascript object
+            let data = {
+                id: medicalCenterID
+            };
+
+            // Setup our AJAX request
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("DELETE", "/delete-center-ajax", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+
+            // Tell our AJAX request how to resolve
+            xhttp.onreadystatechange = () => {
+                if (xhttp.readyState == 4 && xhttp.status == 204) {
+
+                    // Add the new data to the table
+                    deleteRow(medicalCenterID);
+
+                }
+                else if (xhttp.readyState == 4 && xhttp.status != 204) {
+                    console.log("There was an error with the input.")
+                }
+            }
+            // Send the request and wait for the response
+            xhttp.send(JSON.stringify(data));
+        }
+
+        function deleteRow(medicalCenterID){
+
+            let table = document.getElementById("medical-center-table");
+            for (let i = 0, row; row = table.rows[i]; i++) {
+                //iterate through rows
+                //rows would be accessed using the "row" variable assigned in the for loop
+                if (table.rows[i].getAttribute("data-value") == medicalCenterID) {
+                    table.deleteRow(i);
+                    break;
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+ 
+    <!-- Title -->
+    <h1>Medical Centers</h1>
+
+    {{!-- Links section --}}
+    [ 
+    <a href="/">Blood Donors</a> |
+    <a href="/Blood_Bags">Blood Bags</a> |
+    <a href="/Blood_Recipients">Blood Recipients</a> |
+    <a href="/Blood_Donation_Inventories">Blood Donation Inventories</a> |
+    <a href="/Blood_Donation_Centers">Blood Donation Centers</a> |
+    <a href="/Blood_Banks">Blood Banks</a> | 
+    <a href="/Medical_Centers">Medical Centers</a>
+    ]
+    <p></p>
+    [
+    <a href="/Banks_has_Donations">Banks has Donation Centers</a> |
+    <a href="/Donations_has_Donors">Donation Centers has Donors</a> |
+    <a href="/Centers_has_Banks">Medical Centers has Banks</a> |
+    <a href="/Centers_has_Recipients">Medical Centers has Recipients</a> 
+    ] 
+    <br></br>
+
+    {{!-- Display Medical Centers --}}
+    <div id="browse" style="display: block">
+      <legend><strong>Browse Medical Centers</strong></legend>
+        <table id="medical-center-table" border="1" cellpadding="5">
+            {{!-- Header section --}}
+            <thead>
+                <tr>
+                    <th></th>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+            {{!-- Body section --}}
+            <tbody>
+                {{!-- For each row, print the all columns --}}
+                {{#each data}}
+                <tr data-value={{this.medicalCenterID}}>
+                    <td><button onclick="deleteCenter({{this.medicalCenterID}})">Delete</button></td>
+                    <td>{{this.medicalCenterID}}</td>
+                    <td>{{this.medicalCenterName}}</td>
+                    <td>{{this.medicalCenterAddress}}</td>
+                    <td>{{this.medicalCenterPhoneNumber}}</td>
+                    <td>{{this.medicalCenterPrimaryContact}}</td>
+                    <td>{{this.medicalCenterLicenseNumber}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table> 
+    </div>
+    <br></br>
+
+   <!-- Intsert New Medical Center -->
+    <div id="insert">
+        <form method="POST" id="add-medical-center-form" action="/add-medical-center-form">
+        <legend><strong>Add Medical Center</strong></legend>
+        <fieldset class="fields">
+
+            <label for="medicalCenterName-Input">Name</label> 
+            <input type="text" name="medicalCenterName-Input" id="medicalCenterName-Input" required> <br>
+
+            <label for="medicalCenterAddress-Input">Address</label>
+            <input type="text" name="medicalCenterAddress-Input" id="medicalCenterAddress-Input" required> <br>
+
+            <label for="medicalCenterPhoneNumber-Input">Phone Number</label>
+            <input type="text" name="medicalCenterPhoneNumber-Input"  id="medicalCenterPhoneNumber-Input" required> <br>
+
+            <label for="medicalCenterPrimaryContact-Input">Primary Contact</label>
+            <input type="text" name="medicalCenterPrimaryContact-Input" id="medicalCenterPrimaryContact-Input" required> <br>
+
+            <label for="medicalCenterLicenseNumber-Input">License Number</label>
+            <input type="text" name="medicalCenterLicenseNumber-Input" id="medicalCenterLicenseNumber-Input" required> <br>
+
+        </fieldset>
+            <p></p>
+
+            <input type="submit"> <br> <br>
+
+        </form>
+    </div>
+
+    <!-- Update Medical Center -->
+    <div id="update">
+        <form id="update-center-form-ajax">
+            <legend><strong>Update Medical Center</strong></legend>
+            <fieldset class="fields">
+
+            <label for="medicalCenterID-Update">Select Medical Center ID</label>
+            <select name="medicalCenterID-Update" id="medicalCenterID-Update">
+                <option></option>
+                {{#each data}}
+                <option value="{{this.medicalCenterID}}">{{this.medicalCenterID}}</option>
+                {{/each}}
+            </select> <br>
+
+            <label for="medicalCenterName-Update">Name</label> 
+            <input type="text" name="medicalCenterName-Update" id="medicalCenterName-Update" required> <br>
+
+            <label for="medicalCenterAddress-Update">Address</label>
+            <input type="text" name="medicalCenterAddress-Update" id="medicalCenterAddress-Update" required> <br>
+
+            <label for="medicalCenterPhoneNumber-Update">Phone Number</label>
+            <input type="text" name="medicalCenterPhoneNumber-Update"  id="medicalCenterPhoneNumber-Update" required> <br>
+
+            <label for="medicalCenterPrimaryContact-Update">Primary Contact</label>
+            <input type="text" name="medicalCenterPrimaryContact-Update" id="medicalCenterPrimaryContact-Update" required> <br>
+
+            <label for="medicalCenterLicenseNumber-Update">License Number</label>
+            <input type="text" name="medicalCenterLicenseNumber-Update" id="medicalCenterLicenseNumber-Update" required> <br>
+
+            </fieldset>
+            <p></p>
+
+            <input type="submit"> <br>
+
+        </form> 
+    </div>
+
+    <script>
+
+        /*
+        Update functions
+        */
+
+        let updateCenterForm = document.getElementById('update-center-form-ajax');
+
+        // Modify the objects we need
+        updateCenterForm.addEventListener("submit", function (e) {
+
+            console.log("Listener..");
+    
+            // Prevent the form from submitting
+            e.preventDefault();
+
+            // Get form fields we need to get data from
+            let inputID = document.getElementById("medicalCenterID-Update");
+            let nameInput = document.getElementById("medicalCenterName-Update");
+            let addressInput = document.getElementById("medicalCenterAddress-Update");
+            let phoneInput = document.getElementById("medicalCenterPhoneNumber-Update");
+            let contactInput = document.getElementById("medicalCenterPrimaryContact-Update");
+            let licenseInput = document.getElementById("medicalCenterLicenseNumber-Update");
+
+
+            // Get the values from the form fields
+            let iDValue = inputID.value;
+            let nameValue = nameInput.value;
+            let addressValue = addressInput.value;
+            let phoneValue = phoneInput.value;
+            let contactValue = contactInput.value;
+            let licenseValue = licenseInput.value;
+
+            //Check for NULL values?
+            //if (isNaN(homeworldValue)) 
+            //{
+            //    return;
+            //}
+
+            // Put our data we want to send in a javascript object
+            let data = {
+                medicalCenterID: iDValue,
+                medicalCenterName: nameValue,
+                medicalCenterAddress: addressValue,
+                medicalCenterPhoneNumber: phoneValue,
+                medicalCenterPrimaryContact: contactValue,
+                medicalCenterLicenseNumber: licenseValue
+            }
+
+            
+            // Setup our AJAX request
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("PUT", "/put-center-ajax", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+
+            window.location.href
+
+            // Tell our AJAX request how to resolve
+            xhttp.onreadystatechange = () => {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    // Reload page
+                    window.location.reload();
+                }
+                else if (xhttp.readyState == 4 && xhttp.status != 200) {
+                    console.log("There was an error with the input.")
+                }
+        }
+
+        // Send the request and wait for the response
+        xhttp.send(JSON.stringify(data));
+
+        })
+
+    </script>
+
+  <!-- Update Blood MedicalCenter 
+  <div id="update">
+    <form  method="POST" id="updateDonor">
+        <legend><strong>Update Blood MedicalCenter</strong></legend>
+            <fieldset class="fields">
+              <label>Name</label><input type="text" name="medicalCenterID-Input"> <br>
+              <label>Address</label><input type="text" name="medicalCenterAddress-Input"> <br>
+              <label>Phone Number</label><input type="text" name="medicalCenterPhoneNumber-Input"> <br>
+              <label>Primary Contact</label><input type="text" name="medicalCenterPrimaryContact-Input"> <br> 
+              <label>License Number</label><input type="text" name="medicalCenterLicenseNumber-Input"> <br>
+      </fieldset>
+        <input class="btn" type="button" value="Update" onClick="browseMedicalCenters()()">
+        <input class="btn" type="button" value="Cancel" onClick="browseMedicalCenters()()">
+    </form> 
+  </div>
+  -->
+   <!-- Delete Blood Donor 
+   <div id="delete">
+    <form method="POST" id="deleteMedicalCenter">
+        <legend><strong>Delete Blood MedicalCenter</strong></legend>
+            <fieldset class="fields">
+            <p>Are you sure you wish to delete the following?</p>
+            <label>medicalCenterID:</label> 1 <br>
+            <label> Name </label> 1 <br>
+      </fieldset>
+        <input class="btn" type="button" value="Delete" onClick="browseMedicalCenters()()">
+        <input class="btn" type="button" value="Cancel" onClick="browseMedicalCenters()()">
+    </form> 
+  </div>
+  -->
+</body>  

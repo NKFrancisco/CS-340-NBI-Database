@@ -1,0 +1,260 @@
+<head>
+    <title>Blood Donation Centers</title>
+
+    <script>
+        //    Delete functions
+        function deleteDonation(bloodDonationCenterID) {
+
+            console.log("deleteCenter called");
+
+            // Put our data we want to send in a javascript object
+            let data = {
+                id: bloodDonationCenterID
+            };
+
+            // Setup our AJAX request
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("DELETE", "/delete-donation-ajax", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+
+            // Tell our AJAX request how to resolve
+            xhttp.onreadystatechange = () => {
+                if (xhttp.readyState == 4 && xhttp.status == 204) {
+
+                    // Add the new data to the table
+                    deleteRow(bloodDonationCenterID);
+
+                }
+                else if (xhttp.readyState == 4 && xhttp.status != 204) {
+                    console.log("There was an error with the input.")
+                }
+            }
+            // Send the request and wait for the response
+            xhttp.send(JSON.stringify(data));
+        }
+
+        function deleteRow(bloodDonationCenterID){
+
+            let table = document.getElementById("donation-center-table");
+            for (let i = 0, row; row = table.rows[i]; i++) {
+                //iterate through rows
+                //rows would be accessed using the "row" variable assigned in the for loop
+                if (table.rows[i].getAttribute("data-value") == bloodDonationCenterID) {
+                    table.deleteRow(i);
+                    break;
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+ 
+    <!-- Title -->
+    <h1>Blood Donation Centers</h1>
+
+    {{!-- Links section --}}
+    [ 
+    <a href="/">Blood Donors</a> |
+    <a href="/Blood_Bags">Blood Bags</a> |
+    <a href="/Blood_Recipients">Blood Recipients</a> |
+    <a href="/Blood_Donation_Inventories">Blood Donation Inventories</a> |
+    <a href="/Blood_Donation_Centers">Blood Donation Centers</a> |
+    <a href="/Blood_Banks">Blood Banks</a> | 
+    <a href="/Medical_Centers">Medical Centers</a> 
+    ]
+    <p></p>
+    [
+    <a href="/Banks_has_Donations">Banks has Donation Centers</a> |
+    <a href="/Donations_has_Donors">Donation Centers has Donors</a> |
+    <a href="/Centers_has_Banks">Medical Centers has Banks</a> |
+    <a href="/Centers_has_Recipients">Medical Centers has Recipients</a> 
+    ] 
+    <br></br>
+
+    {{!-- Display Blood Donation Centers --}}
+    <div id="browse" style="display: block">
+      <legend><strong>Browse Blood Donation Centers</strong></legend>
+        <table id="donation-center-table" border="1" cellpadding="5">
+            {{!-- Header section --}}
+            <thead>
+                <tr>
+                    <th></th>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+            {{!-- Body section --}}
+            <tbody>
+                {{!-- For each row, print the all columns --}}
+                {{#each data}}
+                <tr data-value={{this.bloodDonationCenterID}}>
+                    <td><button onclick="deleteDonation({{this.bloodDonationCenterID}})">Delete</button></td>
+                    <td>{{this.bloodDonationCenterID}}</td>
+                    <td>{{this.donationName}}</td>
+                    <td>{{this.donationAddress}}</td>
+                    <td>{{this.donationPhoneNumber}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table> 
+    </div>
+    <br></br>
+
+   <!-- Intsert New Blood Donation Center -->
+    <div id="insert">
+        <form method="POST" id="add-donation-center-form" action="/add-donation-center-form">
+        <legend><strong>Add Blood Donation Center</strong></legend>
+        <fieldset class="fields">
+
+            <label for="donationName-Input">Name</label> 
+            <input type="text" name="donationName-Input" id="donationName-Input" required> <br>
+
+            <label for="donationAddress-Input">Address</label>
+            <input type="text" name="donationAddress-Input" id="donationAddress-Input" required> <br>
+
+            <label for="donationPhoneNumber-Input">Phone Number</label>
+            <input type="text" name="donationPhoneNumber-Input"  id="donationPhoneNumber-Input" required> <br>
+
+        </fieldset>
+            <p></p>
+
+            <input type="submit"> <br> <br>
+
+        </form>
+    </div>
+
+    <!-- Update Blood Donation Center -->
+    <div id="update">
+        <form id="update-donation-form-ajax">
+            <legend><strong>Update Blood Donation Center</strong></legend>
+            <fieldset class="fields">
+
+            <label for="bloodDonationCenterID-Update">Select Blood Donation Center ID</label>
+            <select name="bloodDonationCenterID-Update" id="bloodDonationCenterID-Update">
+                <option></option>
+                {{#each data}}
+                <option value="{{this.bloodDonationCenterID}}">{{this.bloodDonationCenterID}}</option>
+                {{/each}}
+            </select> <br>
+
+            <label for="donationName-Update">Name</label> 
+            <input type="text" name="donationName-Update" id="donationName-Update" required> <br>
+
+            <label for="donationAddress-Update">Address</label>
+            <input type="text" name="donationAddress-Update" id="donationAddress-Update" required> <br>
+
+            <label for="donationPhoneNumber-Update">Phone Number</label>
+            <input type="text" name="donationPhoneNumber-Update"  id="donationPhoneNumber-Update" required> <br>
+
+            </fieldset>
+            <p></p>
+
+            <input type="submit"> <br>
+
+        </form> 
+    </div>
+
+    <script>
+
+        /*
+        Update functions
+        */
+
+        let updateDonationForm = document.getElementById('update-donation-form-ajax');
+
+        // Modify the objects we need
+        updateDonationForm.addEventListener("submit", function (e) {
+
+            console.log("Listener..");
+    
+            // Prevent the form from submitting
+            e.preventDefault();
+
+            // Get form fields we need to get data from
+            let inputID = document.getElementById("bloodDonationCenterID-Update");
+            let nameInput = document.getElementById("donationName-Update");
+            let addressInput = document.getElementById("donationAddress-Update");
+            let phoneInput = document.getElementById("donationPhoneNumber-Update");
+
+            // Get the values from the form fields
+            let iDValue = inputID.value;
+            let nameValue = nameInput.value;
+            let addressValue = addressInput.value;
+            let phoneValue = phoneInput.value;
+
+            //Check for NULL values?
+            //if (isNaN(homeworldValue)) 
+            //{
+            //    return;
+            //}
+
+            // Put our data we want to send in a javascript object
+            let data = {
+                bloodDonationCenterID: iDValue,
+                donationName: nameValue,
+                donationAddress: addressValue,
+                donationPhoneNumber: phoneValue,
+            }
+
+            
+            // Setup our AJAX request
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("PUT", "/put-donation-ajax", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+
+            window.location.href
+
+            // Tell our AJAX request how to resolve
+            xhttp.onreadystatechange = () => {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    // Reload page
+                    window.location.reload();
+                }
+                else if (xhttp.readyState == 4 && xhttp.status != 200) {
+                    console.log("There was an error with the input.")
+                }
+        }
+
+        // Send the request and wait for the response
+        xhttp.send(JSON.stringify(data));
+
+        })
+
+    </script>
+    
+
+  <!-- Update Blood Donation Center 
+  <div id="update">
+    <form  method="POST" id="updateDonor">
+        <legend><strong>Update Blood Donation Center</strong></legend>
+            <fieldset class="fields">
+              <label>Name</label><input type="text" name="donationName-Input"> <br>
+              <label>Address Group</label><input type="text" name="donationAddress-Input"> <br>
+              <label>Phone Number</label><input type="text" name="donationPhoneNumber-Input"> <br>
+      </fieldset>
+        <input class="btn" type="button" value="Update" onClick="browseDonationCenters()()">
+        <input class="btn" type="button" value="Cancel" onClick="browseDonationCenters()()">
+    </form> 
+  </div>
+  -->
+
+   <!-- Delete Blood Donor 
+   <div id="delete">
+    <form method="POST" id="deleteDonationCenter">
+        <legend><strong>Delete Blood DonationCenter</strong></legend>
+            <fieldset class="fields">
+            <p>Are you sure you wish to delete the following?</p>
+            <label>bloodDonationCenterID:</label> 1 <br>
+            <label> Name  </label> Seattle Blood Donation <br>
+      </fieldset>
+        <input class="btn" type="button" value="Delete" onClick="browseDonationCenters()()">
+        <input class="btn" type="button" value="Cancel" onClick="browseDonationCenters()()">
+    </form> 
+  </div>
+  -->
+
+</body>  

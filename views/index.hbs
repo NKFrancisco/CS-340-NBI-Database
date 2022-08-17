@@ -1,0 +1,288 @@
+<head>
+    <title>Blood Donors</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- Title -->
+    <h1>Blood Donors</h1>
+
+    {{!-- Links section --}}
+    [ 
+    <a href="/">Blood Donors</a> |
+    <a href="/Blood_Bags">Blood Bags</a> |
+    <a href="/Blood_Recipients">Blood Recipients</a> |
+    <a href="/Blood_Donation_Inventories">Blood Donation Inventories</a> |
+    <a href="/Blood_Donation_Centers">Blood Donation Centers</a> |
+    <a href="/Blood_Banks">Blood Banks</a> | 
+    <a href="/Medical_Centers">Medical Centers</a> 
+    ] 
+    <p></p>
+    [
+    <a href="/Banks_has_Donations">Banks has Donation Centers</a> |
+    <a href="/Donations_has_Donors">Donation Centers has Donors</a> |
+    <a href="/Centers_has_Banks">Medical Centers has Banks</a> |
+    <a href="/Centers_has_Recipients">Medical Centers has Recipients</a> 
+    ] 
+    <br></br>
+
+    {{!-- Display Blood Donors --}}
+    <div id="browse" style="display: block">
+        <legend><strong>Browse Blood Donors</strong></legend>
+        <table id="donor-table" border="1" cellpadding="5">
+            {{!-- Header section --}}
+            <thead>
+                <tr>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                </tr>
+            </thead>
+            {{!-- Body section --}}
+            <tbody>
+                {{!-- For each row, print the all columns --}}
+                {{#each data}}
+                <tr data-value={{this.bloodDonorID}}>
+                    <td>{{this.bloodDonorID}}</td>
+                    <td>{{this.donorGender}}</td>
+                    <td>{{this.donorLastName}}</td>
+                    <td>{{this.donorFirstName}}</td>
+                    <td>{{this.donorPhoneNumber}}</td>
+                    <td>{{this.donorAddress}}</td>
+                    <td>{{this.donorEmail}}</td>
+                    <td>{{this.donorBloodGroup}}</td>
+                    <td>{{this.donorDOB}}</td>
+                    <td>{{this.donorLastDonation}}</td>
+                    <td>{{this.donorBloodComponent}}</td>
+                    <td>{{this.donationMethod}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table> 
+    </div>
+    <br></br>
+
+    <!-- Intsert New Blood Donor -->
+    <div id="insert">
+        <form method="POST" id="add-blood-donor-form" action="/add-blood-donor-form">
+        <legend><strong>Add Blood Donor</strong></legend>
+        <fieldset class="fields">
+
+            <label for="donorGender-Input">Gender</label>
+            <input type="text" name="donorGender-Input" id="donorGender-Input" required> <br>
+
+            <label for="donorLastName-Input">Last Name</label>
+            <input type="text" name="donorLastName-Input" id="donorLastName-Input" required> <br>
+
+            <label for="donorFirstName-Input">First Name</label>
+            <input type="text" name="donorFirstName-Input"  id="donorFirstName-Input" required> <br>
+
+            <label for="donorPhoneNumber-Input">Phone Number</label>
+            <input type="text" name="donorPhoneNumber-Input" id="donorPhoneNumber-Input" required> <br> 
+
+            <label for="donorAddress-Input">Address</label>
+            <input type="text" name="donorAddress-Input" id="donorAddress-Input" required> <br>
+
+            <label for="donorEmail-Input">Email</label>
+            <input type="text" name="donorEmail-Input" id="donorEmail-Input" required> <br>
+
+            <label for="donorBloodGroup-Input">Blood Group</label>
+            <input type="text" name="donorBloodGroup-Input" id="donorBloodGroup-Input" required> <br>
+
+            <label for="donorDOB-Input">DOB (YYYY-MM-DD)</label>
+            <input type="text" name="donorDOB-Input" id="donorDOB-Input" required> <br>
+
+            <label for="donorLastDonation-Input">Last Donation (YYYY-MM-DD)</label>
+            <input type="text" name="donorLastDonation-Input" id="donorLastDonation-Input" required> <br>
+
+            <label for="donorBloodComponent-Input">Blood Component</label>
+            <input type="text" name="donorBloodComponent-Input" id="donorBloodComponent-Input" required> <br>
+
+            <label for="donationMethod-Input">Donation Method</label>
+            <input type="text" name="donationMethod-Input" id="donationMethod-Input" required>
+
+        </fieldset>
+            <p></p>
+
+            <input type="submit"> <br> <br>
+
+        </form>
+    </div>
+
+    <!-- Update Blood Donor -->
+    <div id="update">
+        <form id="update-donor-form-ajax">
+            <legend><strong>Update Blood Donor</strong></legend>
+            <fieldset class="fields">
+
+            <label for="bloodDonorID-Select">Select Blood Donor ID</label>
+            <select name="input-fullname" id="mySelect" required>
+                <option></option>
+                {{#each data}}
+                <option value="{{this.bloodDonorID}}">{{this.bloodDonorID}}</option>
+                {{/each}}
+            </select> <br>
+
+            <label>Gender</label>
+            <input type="text" name="donorGender-Update" id="donorGender-Update" required> <br>
+
+            <label>Last Name</label>
+            <input type="text" name="donorLastName-Update" id="donorLastName-Update" required> <br>
+
+            <label>First Name</label>
+            <input type="text" name="donorFirstName-Update" id="donorFirstName-Update" required> <br>
+
+            <label>Phone Number</label>
+            <input type="text" name="donorPhoneNumber-Update" id="donorPhoneNumber-Update" required> <br>
+
+            <label>Address</label>
+            <input type="text" name="donorAddress-Update" id="donorAddress-Update" required> <br>
+
+            <label>Email</label>
+            <input type="text" name="donorEmail-Update" id="donorEmail-Update" required> <br>
+
+            <label>Blood Group</label>
+            <input type="text" name="donorBloodGroup-Update" id="donorBloodGroup-Update" required> <br>
+
+            <label>DOB</label>
+            <input type="text" name="donorDOB-Update" id="donorDOB-Update" required> <br>
+
+            <label>Last Donation</label>
+            <input type="text" name="donorLastDonation-Update" id="donorLastDonation-Update" required> <br>
+
+            <label>Blood Component</label>
+            <input type="text" name="donorBloodComponent-Update" id="donorBloodComponent-Update" required> <br>
+
+            <label>Donation Method</label>
+            <input type="text" name="donationMethod-Update" id="donationMethod-Update" required>
+
+            </fieldset>
+            <p></p>
+
+            <input type="submit"> <br>
+
+        </form> 
+    </div>
+
+    <script>
+        /*
+        Update functions
+        */
+
+        let updateDonorForm = document.getElementById('update-donor-form-ajax');
+
+        // Modify the objects we need
+        updateDonorForm.addEventListener("submit", function (e) {
+
+            console.log("Listener..");
+    
+            // Prevent the form from submitting
+            e.preventDefault();
+
+            // Get form fields we need to get data from
+            let inputID = document.getElementById("mySelect");
+            let inputGender = document.getElementById("donorGender-Update");
+            let inputLastName = document.getElementById("donorLastName-Update");
+            let inputFirstName = document.getElementById("donorFirstName-Update");
+            let inputPhone = document.getElementById("donorPhoneNumber-Update");
+            let inputAddress = document.getElementById("donorAddress-Update");
+            let inputEmail = document.getElementById("donorEmail-Update");
+            let inputBloodGroup = document.getElementById("donorBloodGroup-Update");
+            let inputDOB = document.getElementById("donorDOB-Update");
+            let inputLastDonation = document.getElementById("donorLastDonation-Update");
+            let inputBloodComponent = document.getElementById("donorBloodComponent-Update")
+            let inputDonationMethod = document.getElementById("donationMethod-Update");
+
+            // Get the values from the form fields
+            let iDValue = inputID.value;
+            let genderValue = inputGender.value;
+            let lastNameValue = inputLastName.value;
+            let firstNameValue = inputFirstName.value;
+            let phoneValue = inputPhone.value;
+            let addressValue = inputAddress.value;
+            let emailValue = inputEmail.value;
+            let bloodGroupValue = inputBloodGroup.value;
+            let DOBValue = inputDOB.value;
+            let lastDonationValue = inputLastDonation.value;
+            let bloodComponentValue = inputBloodComponent.value;
+            let donationMethodValue = inputDonationMethod.value;
+
+            
+
+            //Check for NULL values?
+            //if (isNaN(homeworldValue)) 
+            //{
+            //    return;
+            //}
+
+
+            // Put our data we want to send in a javascript object
+            let data = {
+                donorID: iDValue,
+                donorGender: genderValue,
+                donorLastName: lastNameValue,
+                donorFirstName: firstNameValue,
+                donorPhoneNumber: phoneValue,
+                donorAddress: addressValue,
+                donorEmail: emailValue,
+                donorBloodGroup: bloodGroupValue,
+                donorDOB: DOBValue,
+                donorLastDonation: lastDonationValue,
+                donorBloodComponent: bloodComponentValue,
+                donationMethod: donationMethodValue,
+            }
+            
+            // Setup our AJAX request
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("PUT", "/put-donor-ajax", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+
+            window.location.href
+
+            // Tell our AJAX request how to resolve
+            xhttp.onreadystatechange = () => {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    // Reload page
+                    window.location.reload();
+                }
+                else if (xhttp.readyState == 4 && xhttp.status != 200) {
+                    console.log("There was an error with the input.")
+                }
+        }
+
+        // Send the request and wait for the response
+        xhttp.send(JSON.stringify(data));
+
+        })
+
+        /*
+        function updateRow(data, donorID){
+            let parsedData = JSON.parse(data);
+            
+            let table = document.getElementById("donor-table");
+
+            for (let i = 0, row; row = table.rows[i]; i++) {
+            //iterate through rows
+            //rows would be accessed using the "row" variable assigned in the for loop
+            if (table.rows[i].getAttribute("data-value") == donorID) {
+
+                    // Get the location of the row where we found the matching person ID
+                    let updateRowIndex = table.getElementsByTagName("tr")[i];
+
+                    // Get td of homeworld value
+                    let td = updateRowIndex.getElementsByTagName("td")[3];
+
+                    // Reassign homeworld to our value we updated to
+                    td.innerHTML = parsedData[0].name; 
+            }
+            }
+        }
+        */
+    </script>
+
+</body>

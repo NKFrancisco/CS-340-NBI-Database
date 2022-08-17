@@ -1,0 +1,10 @@
+body {
+    background-color: gray;
+    
+}
+
+label, input {
+    margin-top: 8px;
+    margin-right: 3px;
+    margin-bottom: 8px;
+}
