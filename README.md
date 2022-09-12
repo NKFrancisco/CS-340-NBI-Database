@@ -1,5 +1,6 @@
 # CS 340 Introduction to Databases
-Web app with CRUD implementation for 
+Website with CRUD implementation for blood donation inventory database
+Grade Recieved: A
 
 ## Assignment Info
 - Your database should be pre-populated with sample data. At least three rows per table is expected. The sample data should illustrate a table's functionality, e.g. if the table is part of a many-to-many relationship, the sample data should depict M:M.
