@@ -1,5 +1,5 @@
 # CS 340 Introduction to Databases
-Website with CRUD implementation for blood donation inventory database
+Website with CRUD implementation for blood donation inventory database <br />
 Grade Recieved: A
 
 ## Assignment Info
@@ -17,3 +17,5 @@ Grade Recieved: A
 - In a one-to-many relationship, you should be able to set the foreign key value to NULL, that removes the relationship. In case none of the one-to-many relationships in your database has partial participation, you would need to change that to make sure they can have NULL values.
 - In a many-to-many relationship, one should be able to delete a row from the intersection table without creating a data anomaly in the related tables. If you implement DELETE functionality on at least ( 1 ) many - to - many relationship table , such that the rows in the relevant entity tables are not impacted , that is sufficient.
 - To continue the example from above, if you have 5 tables in your schema, then at a minimum, we expect you to implement 5 SELECTs, 5 INSERTs, 1 UPDATE (M:M), 1 DELETE (M:M), 1 NULLable relationship, and 1 Search/Dynamic for a total of 14 functions. 
+
+## Screenshot
