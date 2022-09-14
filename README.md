@@ -1,6 +1,5 @@
 # CS 340 Introduction to Databases
 Website with CRUD implementation for blood donation inventory database <br />
-Grade Recieved: A
 
 ## Assignment Info
 - Your database should be pre-populated with sample data. At least three rows per table is expected. The sample data should illustrate a table's functionality, e.g. if the table is part of a many-to-many relationship, the sample data should depict M:M.
@@ -18,4 +17,4 @@ Grade Recieved: A
 - In a many-to-many relationship, one should be able to delete a row from the intersection table without creating a data anomaly in the related tables. If you implement DELETE functionality on at least ( 1 ) many - to - many relationship table , such that the rows in the relevant entity tables are not impacted , that is sufficient.
 - To continue the example from above, if you have 5 tables in your schema, then at a minimum, we expect you to implement 5 SELECTs, 5 INSERTs, 1 UPDATE (M:M), 1 DELETE (M:M), 1 NULLable relationship, and 1 Search/Dynamic for a total of 14 functions. 
 
-## Screenshot
+## Screenshots
