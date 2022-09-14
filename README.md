@@ -18,11 +18,9 @@ Website with CRUD implementation for blood donation inventory database <br />
 - To continue the example from above, if you have 5 tables in your schema, then at a minimum, we expect you to implement 5 SELECTs, 5 INSERTs, 1 UPDATE (M:M), 1 DELETE (M:M), 1 NULLable relationship, and 1 Search/Dynamic for a total of 14 functions. 
 
 ## Screenshots
-Entity-Relationship Diagram 
+Entity-Relationship Diagram <br />
 ![ERD](ERD.png)
-
-Blood Bag Page
+Blood Bag Page <br />
 ![Blood Bag Page](Bag.png)
-
-Donation Inventory Page
+Donation Inventory Page <br />
 ![Inventory Page](Inventory.png)
