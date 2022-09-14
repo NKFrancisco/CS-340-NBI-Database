@@ -19,8 +19,8 @@ Website with CRUD implementation for blood donation inventory database <br />
 
 ## Screenshots
 Entity-Relationship Diagram <br />
-![ERD](ERD.png)
+![ERD](ERD.png) <br />
 Blood Bag Page <br />
-![Blood Bag Page](Bag.png)
+![Blood Bag Page](Bag.png) <br />
 Donation Inventory Page <br />
 ![Inventory Page](Inventory.png)
