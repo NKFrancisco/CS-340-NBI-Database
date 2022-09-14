@@ -1,5 +1,5 @@
 # CS 340 Introduction to Databases
-Website with CRUD implementation for blood donation inventory database <br />
+Simple website with Create, Read, Update, and Delete methods for created blood donation inventory database <br />
 
 ## Assignment Info
 - Your database should be pre-populated with sample data. At least three rows per table is expected. The sample data should illustrate a table's functionality, e.g. if the table is part of a many-to-many relationship, the sample data should depict M:M.
